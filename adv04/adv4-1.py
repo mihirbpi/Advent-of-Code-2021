@@ -9,12 +9,12 @@ class Board:
     def __init__(self, board_input):
         self.board = board_input
 
-    def mark(self, num):
+    def mark(self, draw):
         for j in range(0, len(self.board)):
 
             for k in range(0, len(self.board[0])):
 
-                if(self.board[j][k][0] == num):
+                if(self.board[j][k][0] == draw):
                     self.board[j][k][1] = True
 
     def get_score(self, draw):
