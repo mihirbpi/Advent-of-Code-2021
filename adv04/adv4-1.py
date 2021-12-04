@@ -6,16 +6,22 @@ boards = input[1:]
 
 def mark(num, boards_list):
     for i in range(0, len(boards_list)):
+
         for j in range(0, len(boards_list[0])):
+
             for k in range(0, len(boards_list[0][0])):
+
                 if(boards_list[i][j][k][0] == num):
                     boards_list[i][j][k][1] = True
 
 def get_score(num, board):
     score = 0
+
     for j in range(0, len(board)):
         row = board[j]
+
         for x in row:
+
             if x[1] == False:
                 score += int(x[0])
 
@@ -29,18 +35,24 @@ def is_bingo(boards_list):
         for j in range(0, len(board)):
             bingo = True
             row = board[j]
+
             for x in row:
+
                 if x[1] == False:
                     bingo = False
+
             if(bingo):
                 return i
 
         for j in range(0, len(board[0])):
             bingo = True
             column = [x[j] for x in board]
+
             for x in column:
+
                 if x[1] == False:
                     bingo = False
+
             if(bingo):
                 return i
 
@@ -66,5 +78,8 @@ for draw in draws:
 
     if(result != None):
         win_board = boards_list[result]
+
+        for row in win_board:
+            print(row)
         print(get_score(draw, win_board))
         break
