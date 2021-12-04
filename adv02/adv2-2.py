@@ -1,6 +1,6 @@
 from aocd import get_data
 
-list = get_data(day=2).split("\n")
+list = get_data(year=2021,day=2).split("\n")
 depth = 0
 horiz = 0
 aim = 0

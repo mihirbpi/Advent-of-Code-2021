@@ -1,6 +1,6 @@
 from aocd import get_data
 
-list = get_data(day=1).split("\n")
+list = get_data(year=2021,day=1).split("\n")
 
 previous_measurement = list[0]
 count = 0

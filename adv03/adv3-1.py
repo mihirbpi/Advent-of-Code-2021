@@ -1,6 +1,6 @@
 from aocd import get_data
 
-list = get_data(day=3).split("\n")
+list = get_data(year=2021,day=3).split("\n")
 num_bits = len(list[0])
 most_common = []
 least_common = []

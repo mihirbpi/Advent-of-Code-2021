@@ -1,6 +1,6 @@
 from aocd import get_data
 
-list = get_data(day=1).split("\n")
+list = get_data(year=2021,day=1).split("\n")
 
 previous_measurement_sum = int(list[0]) + int(list[1]) + int(list[2])
 count = 0

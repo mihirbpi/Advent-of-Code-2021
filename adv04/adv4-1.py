@@ -1,6 +1,6 @@
 from aocd import get_data
 
-input = get_data(day=4).split("\n\n")
+input = get_data(year=2021,day=4).split("\n\n")
 draws = input[0].split(",")
 boards = input[1:]
 
@@ -78,8 +78,5 @@ for draw in draws:
 
     if(result != None):
         win_board = boards_list[result]
-
-        for row in win_board:
-            print(row)
         print(get_score(draw, win_board))
         break

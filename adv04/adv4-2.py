@@ -1,6 +1,6 @@
 from aocd import get_data
 
-input = get_data(day=4).split("\n\n")
+input = get_data(year=2021,day=4).split("\n\n")
 
 draws = input[0].split(",")
 boards = input[1:]
