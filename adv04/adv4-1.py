@@ -2,39 +2,40 @@ from aocd import get_data
 
 input = get_data(year=2021,day=4).split("\n\n")
 draws = input[0].split(",")
-boards = input[1:]
+boards_input = map(lambda x: x.split("\n"), input[1:])
 
-def mark(num, boards_list):
-    for i in range(0, len(boards_list)):
+class Board:
 
-        for j in range(0, len(boards_list[0])):
+    def __init__(self, board_input):
+        self.board = board_input
 
-            for k in range(0, len(boards_list[0][0])):
+    def mark(self, num):
+        for j in range(0, len(self.board)):
 
-                if(boards_list[i][j][k][0] == num):
-                    boards_list[i][j][k][1] = True
+            for k in range(0, len(self.board[0])):
 
-def get_score(num, board):
-    score = 0
+                if(self.board[j][k][0] == num):
+                    self.board[j][k][1] = True
 
-    for j in range(0, len(board)):
-        row = board[j]
+    def get_score(self, draw):
+        score = 0
 
-        for x in row:
+        for j in range(0, len(self.board)):
+            row = self.board[j]
 
-            if x[1] == False:
-                score += int(x[0])
+            for x in row:
 
-    return score * int(num)
+                if x[1] == False:
+                    score += int(x[0])
+
+        return score * int(draw)
 
 
-def is_bingo(boards_list):
-    for i in range(0, len(boards_list)):
-        board = boards_list[i]
+    def has_won(self):
 
-        for j in range(0, len(board)):
+        for j in range(0, len(self.board)):
             bingo = True
-            row = board[j]
+            row = self.board[j]
 
             for x in row:
 
@@ -42,11 +43,11 @@ def is_bingo(boards_list):
                     bingo = False
 
             if(bingo):
-                return i
+                return True
 
-        for j in range(0, len(board[0])):
+        for j in range(0, len(self.board[0])):
             bingo = True
-            column = [x[j] for x in board]
+            column = [x[j] for x in self.board]
 
             for x in column:
 
@@ -54,29 +55,32 @@ def is_bingo(boards_list):
                     bingo = False
 
             if(bingo):
-                return i
-
+                return True
 
 boards_list = []
 
-for board in boards:
-    boards_list.append(board.split("\n"))
+for board_input in boards_input:
 
-for board in boards_list:
-
-    for i in range (0, len(board)):
-        split = board[i].split(" ")
+    for i in range (0, len(board_input)):
+        split = board_input[i].split(" ")
         split = [x for x in split if x != ""]
 
         for j in range(0, len(split)):
             split[j] = [split[j], False]
-        board[i] = split
+        board_input[i] = split
 
+    boards_list.append(Board(board_input))
+
+result = None
 for draw in draws:
-    mark(draw, boards_list)
-    result = is_bingo(boards_list)
+
+    for board in boards_list:
+        board.mark(draw)
+
+        if(board.has_won()):
+            result = board.get_score(draw)
+            print(result)
+            break
 
     if(result != None):
-        win_board = boards_list[result]
-        print(get_score(draw, win_board))
         break
