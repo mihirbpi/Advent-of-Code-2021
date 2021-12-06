@@ -1,8 +1,9 @@
 from aocd import get_data
 
 input = get_data(year=2021,day=6).split("\n")
-l0 = map(int, input[0].split(","))
-l = []
+input_fish = map(int, input[0].split(","))
+fish_list = []
+num_days = 80
 
 class Fish:
 
@@ -25,18 +26,18 @@ class Fish:
 
 day = 0
 
-for num in l0:
-    l.append(Fish(day, num))
+for timer in input_fish:
+    fish_list.append(Fish(day, timer))
 
-while(day < 80):
+while(day < num_days):
     day += 1
 
-    for fish in l:
+    for fish in fish_list:
         fish.update_timer(day)
 
-    for fish in l:
+    for fish in fish_list:
 
         if(fish.can_create() == True):
-            l.append(Fish(day, 8))
+            fish_list.append(Fish(day, 8))
 
-print(len(l))
+print(len(fish_list))
