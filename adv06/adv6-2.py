@@ -8,6 +8,7 @@ fish_birth_dict = defaultdict(lambda:0)
 num_days = 256
 
 def update_fish_born_on_day(input_fish, fish_birth_dict, curr_day):
+
     for fish in input_fish:
 
         if(curr_day % 7 == fish + 1):
