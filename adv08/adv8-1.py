@@ -11,27 +11,24 @@ def my_sort(l):
 count = 0
 
 for line in input:
-    signal_to_digits = defaultdict(lambda: -1)
+    signal_to_digit = defaultdict(lambda: -1)
     signals = line.strip("\n").split(" | ")[0].split(" ")
     digits = line.strip("\n").split(" | ")[1].split(" ")
 
     for signal in signals:
 
         if(len(signal) == 2):
-            signal_to_digits[tuple(my_sort(list(signal)))] = 1
+            signal_to_digit[tuple(my_sort(list(signal)))] = 1
 
         elif(len(signal) == 4):
-            signal_to_digits[tuple(my_sort(list(signal)))] = 4
+            signal_to_digit[tuple(my_sort(list(signal)))] = 4
 
         elif(len(signal) == 3):
-            signal_to_digits[tuple(my_sort(list(signal)))] = 7
+            signal_to_digit[tuple(my_sort(list(signal)))] = 7
 
         elif(len(signal) == 7):
-            signal_to_digits[tuple(my_sort(list(signal)))] = 8
+            signal_to_digit[tuple(my_sort(list(signal)))] = 8
 
-    for digit in digits:
-
-        if(signal_to_digits[tuple(my_sort(list(digit)))] in [1,4,7,8]):
-            count += 1
+    count += len([digit for digit in digits if signal_to_digit[tuple(my_sort(list(digit)))] in [1,4,7,8]])
 
 print(count)
