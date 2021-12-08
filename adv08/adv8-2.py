@@ -9,19 +9,17 @@ def deduce(signal_to_digit, digit_to_signal, signals):
 
         for letter in digit_to_signal["8"]:
 
-            if(letter not in signal):
+            if(letter not in signal and letter in digit_to_signal["4"] and letter not in digit_to_signal["1"]):
+                signal_to_digit[tuple(sorted(list(signal)))] = "0"
+                digit_to_signal["0"] = tuple(sorted(list(signal)))
 
-                if(letter in digit_to_signal["4"] and letter not in digit_to_signal["1"]):
-                    signal_to_digit[tuple(sorted(list(signal)))] = "0"
-                    digit_to_signal["0"] = tuple(sorted(list(signal)))
+            elif(letter not in signal and letter in digit_to_signal["4"] and letter in digit_to_signal["1"]):
+                signal_to_digit[tuple(sorted(list(signal)))] = "6"
+                digit_to_signal["6"] = tuple(sorted(list(signal)))
 
-                elif(letter in digit_to_signal["4"] and letter in digit_to_signal["1"]):
-                    signal_to_digit[tuple(sorted(list(signal)))] = "6"
-                    digit_to_signal["6"] = tuple(sorted(list(signal)))
-
-                elif(letter not in digit_to_signal["4"]):
-                    signal_to_digit[tuple(sorted(list(signal)))] = "9"
-                    digit_to_signal["9"] = tuple(sorted(list(signal)))
+            elif(letter not in signal and letter not in digit_to_signal["4"]):
+                signal_to_digit[tuple(sorted(list(signal)))] = "9"
+                digit_to_signal["9"] = tuple(sorted(list(signal)))
 
     for signal in [x for x in signals if len(x) == 5]:
 
