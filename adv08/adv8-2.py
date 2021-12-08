@@ -45,8 +45,8 @@ def deduce(signal_to_digit, digit_to_signal, signals):
 total = 0
 
 for line in input:
-    signal_to_digit = defaultdict(lambda: -1)
-    digit_to_signal = defaultdict(lambda: -1)
+    signal_to_digit = defaultdict(lambda: "-1")
+    digit_to_signal = defaultdict(lambda: "-1")
     signals = line.strip("\n").split(" | ")[0].split(" ")
     digits = line.strip("\n").split(" | ")[1].split(" ")
 
