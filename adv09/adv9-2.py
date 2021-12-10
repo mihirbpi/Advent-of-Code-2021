@@ -8,21 +8,17 @@ def is_low_pt(pt, height):
     i,j = list(pt)
     return min([height[(i,j+1)], height[(i+1,j)], height[(i-1,j)], height[(i,j-1)]]) > height[(i,j)]
 
-def get_low_pts(pt, height, visited_list, low_pts_visited_list, low_pts):
-    i,j = list(pt)
+def traverse_basin(pt, height, visited_list, basin_list):
     visited_list.append(pt)
+    basin_list.append(pt)
+    i,j = list(pt)
+    around_pts = [(i,j+1), (i+1,j), (i-1,j), (i,j-1)]
 
-    if(pt in low_pts):
-        low_pts_visited_list.append(pt)
-        return
+    for p in around_pts:
 
-    else:
-        around = [(i,j+1), (i+1,j), (i-1,j), (i,j-1)]
+        if(height[p] > height[pt] and height[p] < 9 and not p in visited_list):
 
-        for p in around:
-
-            if(height[p] < 10 and height[p] < height[pt] and p not in visited_list):
-                get_low_pts(p, height,  visited_list, low_pts_visited_list, low_pts)
+            traverse_basin(p, height, visited_list, basin_list)
 
 height = defaultdict(lambda: 10)
 
@@ -35,18 +31,10 @@ low_pts = [pt for pt in list(height.keys()) if is_low_pt(pt, height)]
 
 basin_sizes = []
 
-for i in range(0, len(low_pts)):
-    low_pt = low_pts[i]
-    count = 0
-
-    for pt in list(height.keys()):
-        low_pts_visited_list = []
-        visited_list = []
-        get_low_pts(pt, height, visited_list, low_pts_visited_list, low_pts)
-
-        if(len(low_pts_visited_list) == 1 and low_pts_visited_list[0] == low_pt and height[pt] < 9):
-            count += 1
-
-    basin_sizes.append(count)
+for low_pt in low_pts:
+    visited_list = []
+    basin_list = []
+    traverse_basin(low_pt, height, visited_list, basin_list)
+    basin_sizes.append(len(basin_list))
 
 print(np.prod(sorted(basin_sizes)[-3:]))
