@@ -48,6 +48,23 @@ def fold(fold_instruct, paper_dict):
 def num_visible(paper_dict):
     return len([x for x in paper_dict if paper_dict[x] == 1])
 
+def display_image(paper_dict):
+    max_x = max([pt[0] for pt in paper_dict if paper_dict[pt] == 1])
+    max_y = max([pt[1] for pt in paper_dict if paper_dict[pt] == 1])
+
+    grid = [ ["." for i in range(0, max_x + 1)] for j in range(0, max_y + 1)]
+
+    points = [pt for pt in paper_dict]
+
+    for pt in points:
+        if(paper_dict[pt] == 1):
+            grid[pt[1]][pt[0]] = "▫️"
+
+    for list in grid:
+        print("".join(list))
+    print("\n")
+
+
 paper_dict = defaultdict(lambda: 0)
 fold_list = []
 dot_coords_input = input[0].split("\n")
@@ -63,5 +80,7 @@ for line in fold_input:
     value = int(line.split("=")[1])
     fold_list.append((axis, value))
 
-fold(fold_list[0], paper_dict)
-print(num_visible(paper_dict))
+for fold_instruct in fold_list:
+    fold(fold_instruct, paper_dict)
+
+display_image(paper_dict)
