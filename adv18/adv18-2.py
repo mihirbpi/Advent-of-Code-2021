@@ -2,7 +2,9 @@ from aocd import get_data
 import json
 import re
 
+
 input = get_data(year=2021,day=18).split("\n")
+#input = open("input.txt").read().split("\n")[:-1]
 pattern_explode = re.compile(r"\[\d+,\d+\]")
 pattern_number = re.compile(r"\d+")
 
@@ -40,7 +42,6 @@ def can_split(line, pattern_explode, pattern_number):
     return False
 
 def reduce(line, pattern_explode, pattern_number):
-    #print(line, can_explode(line, pattern_explode, pattern_number), can_split(line, pattern_explode, pattern_number))
     explode_matches = re.finditer(pattern_explode, line)
     number_matches = re.finditer(pattern_number, line)
     return_string = line
@@ -68,7 +69,6 @@ def reduce(line, pattern_explode, pattern_number):
                         right_digit_indices = m.span()
 
                 new_return_string = ""
-
                 for i in range(0, len(return_string)):
 
                     if(i < match.span()[0]):
@@ -88,7 +88,6 @@ def reduce(line, pattern_explode, pattern_number):
                         new_return_string += ""
 
                     elif(i >= match.span()[1]):
-
                         if(right_digit_indices != None and i == right_digit_indices[0]):
                             original_int = int(return_string[right_digit_indices[0]:right_digit_indices[1]])
                             new_return_string += str(original_int + right)
@@ -101,13 +100,11 @@ def reduce(line, pattern_explode, pattern_number):
                         new_return_string += return_string[i]
 
                 if(new_return_string != return_string):
+
                     return_string = new_return_string
                     return reduce(return_string, pattern_explode, pattern_number)
-
                 return return_string
-
     else:
-
         if(can_split(return_string, pattern_explode, pattern_number)):
             split_match = None
 
@@ -133,7 +130,6 @@ def reduce(line, pattern_explode, pattern_number):
                 if(new_return_string != return_string):
                     return_string = new_return_string
                     return reduce(return_string, pattern_explode, pattern_number)
-
                 return return_string
 
         else:
@@ -152,9 +148,16 @@ def magnitude(snailfishlist):
     else:
         return 3*magnitude(snailfishlist[0]) + 2*magnitude(snailfishlist[1])
 
-curr_sum = input[0]
+highest_magnitude = -1
 
-for i in range(1, len(input)):
-    curr_sum = add(curr_sum, input[i], pattern_explode, pattern_number)
+for i in range(0, len(input)):
 
-print(magnitude(json.loads(curr_sum)))
+    for j in range(0, len(input)):
+
+        if(i != j):
+            test_magnitude = magnitude(json.loads(add(input[i], input[j], pattern_explode, pattern_number)))
+
+            if(test_magnitude > highest_magnitude):
+                highest_magnitude = test_magnitude
+
+print(highest_magnitude)
