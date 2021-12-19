@@ -40,7 +40,6 @@ def can_split(line, pattern_explode, pattern_number):
     return False
 
 def reduce(line, pattern_explode, pattern_number):
-    #print(line, can_explode(line, pattern_explode, pattern_number), can_split(line, pattern_explode, pattern_number))
     explode_matches = re.finditer(pattern_explode, line)
     number_matches = re.finditer(pattern_number, line)
     return_string = line

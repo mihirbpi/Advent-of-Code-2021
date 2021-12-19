@@ -4,7 +4,6 @@ import re
 
 
 input = get_data(year=2021,day=18).split("\n")
-#input = open("input.txt").read().split("\n")[:-1]
 pattern_explode = re.compile(r"\[\d+,\d+\]")
 pattern_number = re.compile(r"\d+")
 
