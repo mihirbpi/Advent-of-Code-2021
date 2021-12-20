@@ -1,7 +1,6 @@
 from aocd import get_data
 
 input = get_data(year=2021,day=19).split("\n\n")
-#input = open("input.txt").read().split("\n\n")
 
 def distance_vector(l1, l2):
     return [ abs(l1[0] - l2[0]), abs(l1[1] - l2[1]), abs(l1[2] - l2[2])]
@@ -103,18 +102,11 @@ beacon_distances_zero =  scanners[0].get_beacon_distances()
 found_list = [0]
 
 while(len(found_list) < len(scanners)):
-    print("length:", len(scanners) - len(found_list))
-    #print(len(scanners[0].pt_list))
+
     for i in range(0, len(scanners)):
 
         if(i not in found_list):
-            print("i: ", i)
-            #print(i / (len(scanners) - len(found_list)))
             scanner = scanners[i]
-            #print(scanner.number)
-            #print(scanner.pt_list)
-            #print("a\n\n")
-            #beacon_distances_zero =  scanners[0].get_beacon_distances()
             beacon_distances_current = scanner.get_beacon_distances()
             diff = None
             rot_index = None
@@ -122,11 +114,10 @@ while(len(found_list) < len(scanners)):
             for j in range(0, len(beacon_distances_current)):
 
                 rotation = beacon_distances_current[j]
+
                 for o in range(0, len(rotation)):
                     elem = rotation[o]
                     distance_list_to_check = elem[1]
-                    #if(distance_list_to_check matches some distance list in 0):
-                    #for k in range(0, 1):
                     other_rotation = beacon_distances_zero[0]
 
                     for other_elem in other_rotation:
@@ -139,33 +130,28 @@ while(len(found_list) < len(scanners)):
 
                                 if(other_distance_list_to_check[m] == distance_list_to_check[n]):
                                     count += 1
-                            #if(i == 4):
-                            #    print("b", i, count)
+
                         if(count >= 12 and other_elem[0] in scanners[0].pt_list):
-                                #print(j, other_elem[0], elem[0])
-                                #print(diff_vector(other_elem[0], elem[0]))
+
                             if(diff == None and rot_index == None):
                                 diff = diff_vector(other_elem[0], elem[0])
                                 rot_index = j
 
-                                #print("\n\n")
-                                #break
             if(rot_index != None and diff != None):
                 found_list.append(i)
+
                 for pt in scanner.pt_list:
                     pt_rotation = get_pt_rotations(pt)[rot_index]
-
-                    #print(pt_rotation, diff,  diff_vector(pt_rotation, diff))
                     diff_vec = add_vector(pt_rotation, diff)
+
                     if diff_vec not in scanners[0].pt_list:
                         scanners[0].pt_list.append(diff_vec)
 
                 beacon_distances_zero =  scanners[0].get_beacon_distances()
-                        #print(diff_vec)
-            #print(pt_rotation, diff,  diff_vec)
 
 count = 0
+
 for x in list(sorted(scanners[0].pt_list)):
-    #print(x)
     count += 1
+    
 print(count)
