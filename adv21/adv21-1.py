@@ -46,8 +46,6 @@ class Player:
     def has_won(self):
         return self.score >= 1000
 
-
-
 Player_1 = Player(player_1_start_pos)
 Player_2 = Player(player_2_start_pos)
 Dice = DeterministicDice(100)
