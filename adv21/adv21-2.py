@@ -25,7 +25,7 @@ def find_outcomes(curr_player, playerpos, playerscore, num_wins1, num_wins2,  ot
     elif(curr_player == 1 and playerscore >= 21):
         return 1, playerpos, playerscore, num_wins1 + 1, num_wins2, otherplayerpos, otherplayerscore
 
-    elif(curr_player == 2):
+    elif(curr_player == 2 or curr_player == 0):
 
         total_wins1_list = []
         total_wins2_list = []
@@ -36,8 +36,18 @@ def find_outcomes(curr_player, playerpos, playerscore, num_wins1, num_wins2,  ot
 
                 for r3 in range(1, 4):
                     r = r1+r2+r3
-                    next_pos = get_next_pos(otherplayerpos, r)
-                    outcomes = find_outcomes(1, next_pos, otherplayerscore + next_pos, num_wins1, num_wins2, playerpos, playerscore)
+
+                    next_pos = None
+                    outcomes = None
+
+                    if(curr_player == 2):
+                        next_pos = get_next_pos(otherplayerpos, r)
+                        outcomes = find_outcomes(1, next_pos, otherplayerscore + next_pos, num_wins1, num_wins2, playerpos, playerscore)
+
+                    elif(curr_player == 0):
+                        next_pos = get_next_pos(playerpos, r)
+                        outcomes = find_outcomes(1, next_pos, playerscore + next_pos, num_wins1, num_wins2, otherplayerpos, otherplayerscore)
+
                     total_wins1_list.append(outcomes[3])
                     total_wins2_list.append(outcomes[4])
 
@@ -69,26 +79,5 @@ def find_outcomes(curr_player, playerpos, playerscore, num_wins1, num_wins2,  ot
 
             return curr_player, playerpos, playerscore, total_wins1, total_wins2, otherplayerpos, otherplayerscore
 
-    elif(curr_player == None):
 
-            total_wins1_list = []
-            total_wins2_list = []
-
-            for r1 in range(1, 4):
-
-                for r2 in range(1, 4):
-
-                    for r3 in range(1, 4):
-                        r = r1+r2+r3
-                        next_pos = get_next_pos(playerpos, r)
-                        outcomes = find_outcomes(1, next_pos, playerscore + next_pos, num_wins1, num_wins2, otherplayerpos, otherplayerscore)
-                        total_wins1_list.append(outcomes[3])
-                        total_wins2_list.append(outcomes[4])
-
-
-            total_wins1 = sum(total_wins1_list)
-            total_wins2 = sum(total_wins2_list)
-
-            return curr_player, playerpos, playerscore, total_wins1, total_wins2, otherplayerpos, otherplayerscore
-
-print(find_outcomes(None, player_1_start_pos, 0, 0, 0, player_2_start_pos, 0))
+print(max(find_outcomes(0, player_1_start_pos, 0, 0, 0, player_2_start_pos, 0)))
