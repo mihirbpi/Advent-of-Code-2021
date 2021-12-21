@@ -19,7 +19,6 @@ def get_next_pos(current_pos, increase):
 @lru_cache(maxsize=None)
 def find_outcomes(curr_player, playerpos, playerscore, num_wins1, num_wins2,  otherplayerpos, otherplayerscore):
 
-
     if(curr_player == 2 and playerscore >= 21):
         return 2, playerpos, playerscore, num_wins1, num_wins2 + 1, otherplayerpos, otherplayerscore
 
@@ -30,8 +29,11 @@ def find_outcomes(curr_player, playerpos, playerscore, num_wins1, num_wins2,  ot
 
         total_wins1_list = []
         total_wins2_list = []
+
         for r1 in range(1, 4):
+
             for r2 in range(1, 4):
+
                 for r3 in range(1, 4):
                     r = r1+r2+r3
                     next_pos = get_next_pos(otherplayerpos, r)
