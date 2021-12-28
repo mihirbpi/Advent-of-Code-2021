@@ -33,6 +33,19 @@ def pretty_print(state):
     print(" ########### \n")
 
 
+
+def contains_only(occupant, rooms):
+    for e in rooms[occupant]:
+        if(e != occupant and e != "."):
+            return False
+    return True
+
+def should_move_0(room, rooms):
+    for i in range(0, 2):
+        if(rooms[room][i] != room and rooms[room][i] != "."):
+            return True
+    return False
+
 def can_move_into_room(hallway, room, occupant, hall_index):
     room_col = 2*(ord(occupant)-64)
 
@@ -112,9 +125,10 @@ def get_cost(state):
                     DP[key] = answer
                     return answer
 
+        min_cost = int(1e9)
         for room in rooms:
 
-            if(rooms[room][0] != "." and (rooms[room][0] != room or (rooms[room][0] == room and rooms[room][1] != room)) ):
+            if(rooms[room][0] != "." and should_move_0(room, rooms) ):
                 occupant = rooms[room][0]
                 room_col = 2*(ord(room)-64)
                 occupant_col = 2*(ord(occupant)-64)
@@ -130,14 +144,12 @@ def get_cost(state):
                         if(rooms[occupant][0] == "." and rooms[occupant][1] == occupant):
                             distance = 2 + abs(index - room_col)
                             places_can_move_to.append([-1, distance])
-                            break
 
                         elif(rooms[occupant][0] == "." and rooms[occupant][1] == "."):
                             distance = 3 + abs(index - room_col)
                             places_can_move_to.append([-2, distance])
-                            break
 
-                if(len(places_can_move_to) == 0):
+                if(len(places_can_move_to) >= 0):
 
                     for index in range(room_col, -1, -1):
 
@@ -148,12 +160,10 @@ def get_cost(state):
                             if(rooms[occupant][0] == "." and rooms[occupant][1] == occupant):
                                 distance = 2 + abs(index - room_col)
                                 places_can_move_to.append([-1, distance])
-                                break
 
                             elif(rooms[occupant][0] == "." and rooms[occupant][1] == "."):
                                 distance = 3 + abs(index - room_col)
                                 places_can_move_to.append([-2, distance])
-                                break
 
                 places_can_move_to.sort()
 
@@ -164,11 +174,11 @@ def get_cost(state):
                     new_hallway = list(hallway)
                     new_rooms[occupant][depth] = occupant
                     new_rooms[room][0] = "."
-                    answer =  (MOVE_COSTS[occupant] * p[1]) + get_cost((new_rooms, new_hallway))
-                    DP[key] = answer
-                    return answer
+                    min_cost = min(min_cost, (MOVE_COSTS[occupant] * p[1]) + get_cost((new_rooms, new_hallway)))
+                    DP[key] = min_cost
+                    return min_cost
 
-            elif(rooms[room][0] == "." and rooms[room][1] != "."  and rooms[room][1] != room):
+            elif(rooms[room][0] == "." and rooms[room][1] != "."  and should_move_0(room, rooms)):
                 occupant = rooms[room][0]
                 room_col = 2*(ord(room)-64)
                 occupant_col = 2*(ord(occupant)-64)
@@ -184,12 +194,10 @@ def get_cost(state):
                         if(rooms[occupant][0] == "." and rooms[occupant][1] == occupant):
                             distance = 2 + abs(index - room_col)
                             places_can_move_to.append([-1, distance])
-                            break
 
                         elif(rooms[occupant][0] == "." and rooms[occupant][1] == "."):
                             distance = 3 + abs(index - room_col)
                             places_can_move_to.append([-2, distance])
-                            break
 
                 if(len(places_can_move_to) == 0):
 
@@ -199,15 +207,16 @@ def get_cost(state):
                             break
 
                         elif(index == occupant_col):
+
                             if(rooms[occupant][0] == "." and rooms[occupant][1] == occupant):
                                 distance = 2 + abs(index - room_col)
                                 places_can_move_to.append([-1, distance])
-                                break
+
 
                             elif(rooms[occupant][0] == "." and rooms[occupant][1] == "."):
                                 distance = 3 + abs(index - room_col)
                                 places_can_move_to.append([-2, distance])
-                                break
+
 
                 places_can_move_to.sort()
 
@@ -218,15 +227,15 @@ def get_cost(state):
                     new_hallway = list(hallway)
                     new_rooms[occupant][depth] = occupant
                     new_rooms[room][1] = "."
-                    answer =  (MOVE_COSTS[occupant] * p[1]) + get_cost((new_rooms, new_hallway))
-                    DP[key] = answer
-                    return answer
+                    min_cost = min(min_cost, (MOVE_COSTS[occupant] * p[1]) + get_cost((new_rooms, new_hallway)))
+                    DP[key] = min_cost
+                    return min_cost
 
         min_cost = int(1e9)
 
         for room in rooms:
 
-            if(rooms[room][0] != "." and (rooms[room][0] != room or (rooms[room][0] == room and rooms[room][1] != room)) ):
+            if(rooms[room][0] != "." and should_move_0(room, rooms) ):
                 occupant = rooms[room][0]
                 room_col = 2*(ord(room)-64)
                 occupant_col = 2*(ord(occupant)-64)
@@ -264,7 +273,7 @@ def get_cost(state):
                     min_cost = min(min_cost, (MOVE_COSTS[occupant] * p[0]) + get_cost((new_rooms, new_hallway)))
 
 
-            elif(rooms[room][0] == "." and rooms[room][1] != "."  and rooms[room][1] != room):
+            elif(rooms[room][0] == "." and rooms[room][1] != "."  and should_move_0(room, rooms)):
                 occupant = rooms[room][1]
                 occupant_col = 2*(ord(occupant)-64)
                 room_col = 2*(ord(room)-64)
